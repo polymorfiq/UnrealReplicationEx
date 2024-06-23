@@ -1,5 +1,9 @@
-defmodule UnrealReplicationEx.Protocol do
-  @callback start_link() :: {:ok, proto :: pid} | {:error, reason :: term}
-  @callback serialize(proto :: pid, data :: term) :: {:ok, serialized :: term} | {:error, reason :: term}
-  @callback deserialize(proto :: pid, data :: term) :: {:ok, serialized :: term} | {:error, reason :: term}
+defprotocol UnrealReplicationEx.Protocol do
+  @callback init() :: {:ok, proto :: term} | {:error, reason :: term}
+
+  @spec serialize(proto :: pid, data :: term) :: {:ok, serialized :: term} | {:error, reason :: term}
+  def serialize(proto, data)
+
+  @spec deserialize(proto :: pid, data :: term) :: {:ok, serialized :: term} | {:error, reason :: term}
+  def deserialize(proto, data)
 end

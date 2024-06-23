@@ -1,29 +1,29 @@
 defmodule UnrealReplicationEx.Flows.Udp do
   use GenServer
+  alias UnrealReplicationEx.Protocol
+  defstruct [:pid]
 
-  def start_link(binding, opts \\ []), do: GenServer.start_link(__MODULE__, binding, opts)
+  def create(binding) do
+    {:ok, pid} = GenServer.start_link(__MODULE__, {self(), binding})
+    {:ok, %__MODULE__{pid: pid}}
+  end
 
-  def init(%{address: %{port: port}, protocol: protocol}) do
+  def init({parent, %{address: %{port: port}, protocol: protocol}}) do
      {:ok, socket} = :gen_udp.open(port, [:binary, active: true])
-     {:ok, proto} = protocol.start_link()
+     {:ok, proto} = protocol.init()
 
-     {:ok, %{socket: socket, proto: proto}}
+     {:ok, %{parent: parent, socket: socket, proto: proto}}
   end
 
-  def handle_info({:udp, _socket, _address, _port, data}, socket) do
-    handle_packet(data, socket)
+  def handle_info({:udp, _socket, _address, _port, data}, state) do
+    msg = state.proto |> Protocol.deserialize(data)
+    state.parent |> send(msg)
+
+    {:noreply, state}
   end
+end
 
-  defp handle_packet("quit\n", socket) do
-    IO.puts("Received: quit")
-
-    :gen_udp.close(socket)
-    {:stop, :normal, nil}
-  end
-
-  defp handle_packet(data, socket) do
-    IO.puts("Received: #{String.trim data}")
-
-    {:noreply, socket}
-  end
+defimpl UnrealReplicationEx.Flow, for: UnrealReplicationEx.Flows.Udp do
+  def create(spec), do: UnrealReplicationEx.Flows.Udp.create(spec)
+  def send(flow, spec), do: {:error, "Not implemented!"}
 end
