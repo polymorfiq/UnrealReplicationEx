@@ -12,6 +12,8 @@ defmodule UnrealReplicationEx.Application do
       # {UnrealReplicationEx.Worker, arg}
     ]
 
+    Tethys.Springs.UdpSpring.seed(%{address: %{port: 4444}})
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: UnrealReplicationEx.Supervisor]

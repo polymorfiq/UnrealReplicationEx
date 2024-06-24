@@ -5,7 +5,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/lib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/msgpax" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/tethys" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/tethys_msgpack" />
       <excludeFolder url="file://$MODULE_DIR$/_build/test/lib/msgpax" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/test/lib/tethys" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/test/lib/tethys_msgpack" />
       <excludeFolder url="file://$MODULE_DIR$/deps" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -13,5 +18,9 @@
     <orderEntry type="library" name="msgpax" level="project" />
     <orderEntry type="library" name="ex_doc" level="project" />
     <orderEntry type="library" name="plug" level="project" />
+    <orderEntry type="library" name="tethys" level="project" />
+    <orderEntry type="library" name="tethys_msgpack" level="project" />
+    <orderEntry type="library" name="credo" level="project" />
+    <orderEntry type="library" name="dialyxir" level="project" />
   </component>
 </module>
